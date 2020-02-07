@@ -1,0 +1,95 @@
+{
+  "assets-sort-type": "name",
+  "collision-matrix": [
+    [
+      true
+    ],
+    [
+      false,
+      false,
+      true,
+      true,
+      true,
+      null,
+      true
+    ],
+    [
+      false,
+      true,
+      false,
+      true,
+      null,
+      true,
+      true
+    ],
+    [
+      false,
+      true,
+      true,
+      false
+    ],
+    [
+      false,
+      true,
+      false,
+      false,
+      false,
+      true,
+      true
+    ],
+    [
+      false,
+      false,
+      true,
+      false,
+      true,
+      false
+    ],
+    [
+      false,
+      true,
+      true,
+      false,
+      true,
+      false,
+      false
+    ]
+  ],
+  "design-resolution-height": 1280,
+  "design-resolution-width": 640,
+  "excluded-modules": [
+    "Geom Utils",
+    "3D",
+    "3D Primitive"
+  ],
+  "facebook": {
+    "appID": "",
+    "audience": {
+      "enable": false
+    },
+    "enable": false,
+    "live": {
+      "enable": false
+    }
+  },
+  "fit-height": true,
+  "fit-width": false,
+  "group-list": [
+    "default",
+    "BALL",
+    "BOARD",
+    "WALL",
+    "FLOOR",
+    "PROP",
+    "BLOCK"
+  ],
+  "last-module-event-record-time": 1573268128612,
+  "simulator-orientation": false,
+  "simulator-resolution": {
+    "height": 1280,
+    "width": 640
+  },
+  "start-scene": "84c8f4b2-4711-4762-99f4-a676082a4e60",
+  "use-customize-simulator": true,
+  "use-project-simulator-setting": true
+}

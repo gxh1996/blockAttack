@@ -1,0 +1,10 @@
+{
+    "addBall": 2,
+    "addCountOfBall": 4,
+    "addLengthOfBoard": 4,
+    "addSpeedOfBall": 7,
+    "addSpeedOfBoard": 6,
+    "subLengthOfBoard": 7,
+    "subSpeedOfBall": 5,
+    "total": 35
+}

@@ -8,6 +8,7 @@ export default class Prop extends cc.Component {
 
     private rigid: cc.RigidBody = null;
     private propName: string = null;
+    private triggered: boolean = false;
 
     onLoad() {
         this.rigid = this.node.getComponent(cc.RigidBody);
@@ -23,7 +24,7 @@ export default class Prop extends cc.Component {
         this.node.setPosition(pos);
         this.rigid.linearVelocity = speed;
         this.propName = propName;
-
+        this.triggered = false;
     }
 
     setSpeed(v: cc.Vec2) {
@@ -34,6 +35,9 @@ export default class Prop extends cc.Component {
      * 触发道具效果并删除自己
      */
     trigger() {
+        if (this.triggered)
+            return;
+        this.triggered = true;
         EventManager.publishEvent("triggerProp", this.propName);
         this.destroySelf();
     }

@@ -1,0 +1,1 @@
+{"__type__":"cc.JsonAsset","_name":"exclusiveProp","json":{"说明":"每个道具效果对应的不能共存的道具效果","addLengthOfBoard":"subLengthOfBoard","subLengthOfBoard":"addLengthOfBoard","addSpeedOfBall":"subSpeedOfBall","subSpeedOfBall":"addSpeedOfBall","addSpeedOfBoard":null}}

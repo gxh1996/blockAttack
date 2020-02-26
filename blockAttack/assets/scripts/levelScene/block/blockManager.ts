@@ -147,6 +147,8 @@ export default class BlockManager extends cc.Component {
             return;
         }
 
+        if (!b.node.parent)
+            debugger;
         let wP: cc.Vec2 = b.node.parent.convertToWorldSpaceAR(b.node.getPosition());
         Util.removeArrayItem(this.blockArray, b);
         this.putBlockIntoPool(b.node);

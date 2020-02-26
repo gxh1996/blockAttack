@@ -42,7 +42,7 @@ class EffectTimer {
             EventManager.publishEvent("prop:" + name, data);
             // this.effectNum[name]++;
 
-            EventManager.publishEvent("updatePropDurationShow", [name, 1]);
+            // EventManager.publishEvent("updatePropDurationShow", [name, 1]);
         }
         else { //不能叠加就重置效果时间
             if (this.effectList.length > 0) {
@@ -126,6 +126,7 @@ class EffectTimer {
      */
     private cT: number;
     private data: any;
+    private count: number;
     /**
      * Creates an instance of effect timer.
      * @param name 道具名
@@ -137,6 +138,12 @@ class EffectTimer {
         this.totalT = total;
         this.data = data;
         this.cT = 0;
+        this.count = 1;
+    }
+
+    /**增加计时器个数 */
+    private addNum() {
+        this.count++;
     }
 
     /**
@@ -192,7 +199,7 @@ export default class PropManager extends cc.Component {
     /**
      * prop的下落速度
      */
-    private readonly fallSpeed: cc.Vec2 = cc.v2(0, -100);
+    private readonly fallSpeed: cc.Vec2 = cc.v2(0, -130);
 
     private readonly effectDataOfProp: JsonData;
     private propArray: Prop[] = null;
@@ -295,9 +302,9 @@ export default class PropManager extends cc.Component {
      * @returns  
      */
     createPropInRandom(wP: cc.Vec2) {
-        let r: number = Util.getRandomNumber(0, 100);
-        if (r > this.propRate.total)
-            return;
+        let r: number = Util.getRandomNumber(1, 100);
+        let sum: number;
+        // console.log(r);
         if ((r -= this.propRate.addBall) <= 0)
             this.createProp("addBall", wP);
         else if ((r -= this.propRate.addCountOfBall) <= 0)
@@ -312,8 +319,6 @@ export default class PropManager extends cc.Component {
             this.createProp("subLengthOfBoard", wP);
         else if ((r -= this.propRate.subSpeedOfBall) <= 0)
             this.createProp("subSpeedOfBall", wP);
-        else
-            cc.error("[ERROR] r/this.propRate error!")
     }
 
     /**
@@ -331,10 +336,12 @@ export default class PropManager extends cc.Component {
         this.propArray.push(scr);
         let nP: cc.Vec2 = this.node.convertToNodeSpaceAR(wP);
         scr.init(nP, prop, this.fallSpeed);
+        // console.log(prop);
     }
 
     private deleteProp(p: Prop) {
         Util.removeArrayItem(this.propArray, p);
+        p.node.removeFromParent();
         p.node.destroy();
     }
 

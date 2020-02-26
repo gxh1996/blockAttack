@@ -4,6 +4,7 @@ const { ccclass, property } = cc._decorator;
 export default class Block extends cc.Component {
 
     private sprite: cc.Sprite = null;
+    deleting: boolean = false;
 
     onLoad() {
         this.sprite = this.node.getComponent(cc.Sprite);
@@ -11,5 +12,6 @@ export default class Block extends cc.Component {
 
     init(s: cc.SpriteFrame) {
         this.sprite.spriteFrame = s;
+        this.deleting = false;
     }
 }

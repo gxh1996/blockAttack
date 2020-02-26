@@ -21,6 +21,7 @@ export default class BallManager extends cc.Component {
     private speed: number = 500;
 
     private ballPool: cc.NodePool;
+    private maxBallNum: number = 20;
 
     onLoad() {
         this.ballPool = new cc.NodePool();
@@ -101,9 +102,14 @@ export default class BallManager extends cc.Component {
      * @param d 分裂球的偏角
      */
     private addAllCountOfBall(d: number) {
+        if (this.ballArray.length > this.maxBallNum)
+            return;
+
         let l: number = this.ballArray.length;
         for (let i: number = 0; i < l; i++) {
             let ball: Ball = this.ballArray[i];
+            if (!ball.node.parent)
+                debugger
             let b1: Ball = this.createBall();
             let b2: Ball = this.createBall();
             //设置坐标

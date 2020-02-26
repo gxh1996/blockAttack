@@ -64,6 +64,7 @@ export default class Ball extends cc.Component {
         this.needFollowBoard = false;
         this.isGamePause = false;
         this.rigid.linearVelocity = cc.v2(0, 0);
+        this.vInGamePause = undefined;
     }
 
     private initSubscribe() {
@@ -77,8 +78,10 @@ export default class Ball extends cc.Component {
             // this.enabled = false;
         })
         EventManager.addSubscribe(this, "gameContinue", function () {
-            this.rigid.linearVelocity = this.vInGamePause;
-            this.isGamePause = false;
+            if (this.vInGamePause) {
+                this.rigid.linearVelocity = this.vInGamePause;
+                this.isGamePause = false;
+            }
             // this.rigid.enabled = true;
             // this.enabled = true;
         })
@@ -90,6 +93,14 @@ export default class Ball extends cc.Component {
         if (group === "FLOOR")
             return;
 
+        if (group === "BLOCK" && this.needFollowBoard) {
+            let block: Block = node.getComponent("block");
+            if (!block.deleting) {
+                block.deleting = true;
+                EventManager.publishEvent("ballToBlock", block);
+            }
+        }
+
         SoundManager.soundMgr.playEffect();
     }
 
@@ -99,11 +110,16 @@ export default class Ball extends cc.Component {
 
         if (group === "BLOCK") {
             let block: Block = node.getComponent("block");
-            EventManager.publishEvent("ballToBlock", block);
+            if (!block.deleting) {
+                block.deleting = true;
+                EventManager.publishEvent("ballToBlock", block);
+            }
         }
         else if (group === "BOARD") {
             this.setSpeed(this.ballManager.getSpeed());
         }
+
+        this.reviseSpeed()
     }
 
     /**
@@ -173,11 +189,43 @@ export default class Ball extends cc.Component {
         this.setSpeed(this.ballManager.getSpeed());
     }
 
-    /**
-     * 取消所有订阅，回收ball
-     */
-    destrySelf() {
-        EventManager.publishEvent("deleteBall", this);
+    /**修正速度 */
+    reviseSpeed() {
+        if (this.needFollowBoard)
+            return;
+        //当球的速度方向趋于水平时，给它一个向下的角度
+        let d: number = this.getDegree();
+        // console.log(d);
+        if (d <= this.thresholdOfChangeDir && d >= 0 || d <= 360 && d >= 360 - this.thresholdOfChangeDir) {
+            this.changeDegreeOfLV(360 - this.degreeOfChange);
+            // console.log(`${d}°改为${360 - this.degreeOfChange}`);
+        }
+        else if (d <= 180 - this.thresholdOfChangeDir && d >= 180 || d > 180 && d <= 180 + this.thresholdOfChangeDir) {
+            this.changeDegreeOfLV(180 + this.degreeOfChange);
+            // console.log(`${d}°改为${180 + this.degreeOfChange}`);
+        }
+
+        let newD: number;
+        if (d >= 250 && d < 270) {
+            newD = 250 - Util.getRandomNumber(0, 10);
+            this.changeDegreeOfLV(newD);
+            // console.log(`${d}°改为${newD}`);
+        }
+        else if (d > 270 && d <= 290) {
+            newD = 290 + Util.getRandomNumber(0, 10);
+            this.changeDegreeOfLV(newD);
+            // console.log(`${d}°改为${newD}`);
+        }
+        else if (d === 270) {
+            newD = 270 + Util.getRandomNumber(0, 1);
+            if (newD === 0)
+                newD = 270 + Util.getRandomNumber(15, 30);
+            else
+                newD = 270 - Util.getRandomNumber(15, 30);
+            this.changeDegreeOfLV(newD);
+            // console.log(`${d}°改为${newD}`);
+
+        }
     }
 
     update(dt) {
@@ -192,17 +240,6 @@ export default class Ball extends cc.Component {
             this.node.setPosition(nP);
         }
         else { //已发射
-            //当球的速度方向趋于水平时，给它一个向下的角度
-            let d: number = this.getDegree();
-            if (d <= this.thresholdOfChangeDir && d >= 0 || d <= 360 && d >= 360 - this.thresholdOfChangeDir) {
-                this.changeDegreeOfLV(360 - this.degreeOfChange);
-                // console.log(`${d}°改为${360 - this.degreeOfChange}`);
-            }
-            else if (d <= 180 - this.thresholdOfChangeDir && d >= 180 || d > 180 && d <= 180 + this.thresholdOfChangeDir) {
-                this.changeDegreeOfLV(180 + this.degreeOfChange);
-                // console.log(`${d}°改为${180 + this.degreeOfChange}`);
-            }
-
             //弹板将把球挤到边界里
             let nP: cc.Vec2 = this.node.getPosition();
             let wP: cc.Vec2 = this.node.parent.convertToWorldSpaceAR(nP);
@@ -211,11 +248,9 @@ export default class Ball extends cc.Component {
             }
             //已把球挤出可视范围
             if (wP.x + this.node.width / 2 <= 0 || wP.x - this.node.width / 2 >= this.width) {
-                this.destrySelf();
+                EventManager.publishEvent("deleteBall", this);
             }
         }
-
-
-
     }
+
 }

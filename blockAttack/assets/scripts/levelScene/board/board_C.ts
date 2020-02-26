@@ -30,6 +30,10 @@ export default class Board_C extends cc.Component {
      * board的初始坐标 Canvas节点坐标
      */
     private initPos: cc.Vec2 = null;
+    /**记录由于道具效果影响下积累的宽度，但实际显示的board宽不会超过屏幕大小 */
+    private boardWidth: number = 0;
+    private initWidth: number = 120;
+    private excuteList: [Function, number] = null;
 
     /* 控制变量 */
     private needShoot: boolean = true;
@@ -70,29 +74,35 @@ export default class Board_C extends cc.Component {
         })
 
         EventManager.addSubscribe(this, "prop:addLengthOfBoard", function (len: number) {
-            this.changeWidth(this.node.width + len)
-            //弹板变大可能会超出屏幕，所以要修正一下
-            let x: number = this.board_V.valueInMoveRange(cc.v2(this.node.x, 0)).x;
-            this.node.x = x;
+            //在这里立即执行会报错，很烦！不知道为什么，以后考虑不要立即执行
+            // this.changeWidth(len)
+            this.excuteList = [this.changeWidth, len];
         })
         EventManager.addSubscribe(this, "effectEnd:addLengthOfBoard", function (len: number) {
-            this.changeWidth(this.node.width - len);
+            this.changeWidth(-len);
         })
 
         EventManager.addSubscribe(this, "prop:subLengthOfBoard", function (len: number) {
-            this.changeWidth(this.node.width - len);
+            this.changeWidth(- len);
         })
         EventManager.addSubscribe(this, "effectEnd:subLengthOfBoard", function (len: number) {
-            this.changeWidth(this.node.width + len);
+            this.changeWidth(len);
             //弹板变大可能会超出屏幕，所以要修正一下
-            let x: number = this.board_V.valueInMoveRange(cc.v2(this.node.x, 0)).x;
-            this.node.x = x;
+            // let x: number = this.board_V.valueInMoveRange(cc.v2(this.node.x, 0)).x;
+            // this.node.x = x;
         })
 
+        // this.scheduleOnce(() => {
+        //     this.node.x = 200;
+        // }, 3)
 
     }
 
     initBoard() {
+        this.boardWidth = this.node.width;
+        this.node.width = this.initWidth;
+        this.collider.size.width = this.initWidth;
+        this.collider.apply();
         this.node.setPosition(this.initPos);
         this.createInitBall();
     }
@@ -140,18 +150,27 @@ export default class Board_C extends cc.Component {
         this.idleBall.cancelFollowBoard();
         this.ballManager.setInitedLVOfBall(this.idleBall);
         this.idleBall = null;
-
     }
 
     /**
      * 改变弹板的宽度为w，并自动更新其移动的范围
-     * @param w 
+     * @param changeL  长度改变量
      */
-    private changeWidth(w: number) {
-        this.node.width = w;
-        this.collider.size.width = w;
-        this.collider.apply();
+    private changeWidth(changeL: number) {
+        let windowSize: cc.Size = cc.view.getVisibleSize();
+
+        this.boardWidth = this.node.width + changeL;
+        if (this.boardWidth >= windowSize.width - 2) {
+            this.node.width = windowSize.width - 2;
+        }
+        else
+            this.node.width = this.boardWidth;
         this.board_V.updateMoveRange();
+        this.collider.size.width = this.node.width;
+        this.collider.apply();
+        //弹板变大可能会超出屏幕，所以要修正一下
+        let x: number = this.board_V.valueInMoveRange(cc.v2(this.node.x, 0)).x;
+        this.node.x = x;
     }
 
     /**
@@ -163,5 +182,10 @@ export default class Board_C extends cc.Component {
         this.board_V.moveTo(wP.x, this.board_M.moveSpeed);
     }
 
-    // update (dt) {}
+    update(dt) {
+        if (this.excuteList) {
+            this.excuteList[0].call(this, this.excuteList[1]);
+            this.excuteList = null;
+        }
+    }
 }

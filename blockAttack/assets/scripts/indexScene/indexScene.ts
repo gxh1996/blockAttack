@@ -1,8 +1,7 @@
 import EventManager from "../common/eventManager";
-import GlobalScript from "../common/globalScript";
 import LoadManager from "../common/loadManager";
 import LoadProgress from "../../res/prefabs/loadProgress/loadProgress";
-import SoundManager from "../common/soundMgr";
+import Util from "../common/util";
 
 const { ccclass, property } = cc._decorator;
 
@@ -22,6 +21,9 @@ export default class IndexScene extends cc.Component {
 
     onLoad() {
         this.initSubscribe();
+        for (let i = 0; i < 100; i++) {
+            console.log(Util.getRandomNumber(0, 1));
+        }
     }
 
     private initSubscribe() {

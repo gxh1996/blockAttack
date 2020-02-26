@@ -16,7 +16,7 @@ export default class Floor extends cc.Component {
         let group: string = node.group;
         if (group === "BALL") { //碰撞到球
             let ball: Ball = node.getComponent("ball");
-            ball.destrySelf();
+            EventManager.publishEvent("deleteBall", ball);
         }
         else if (group === "PROP") {
             let prop: Prop = node.getComponent("prop");

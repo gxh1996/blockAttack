@@ -8,7 +8,7 @@ export default class Board_M extends cc.Component {
     /**
      * board移动速度
      */
-    moveSpeed: number = 600;
+    moveSpeed: number = 700;
 
     start() {
         /* 事件订阅 */

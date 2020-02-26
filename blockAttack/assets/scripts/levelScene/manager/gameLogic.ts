@@ -37,7 +37,7 @@ export default class GameLogic extends cc.Component {
     /**
      * blockRoot多久下移一次
      */
-    private readonly blocksDownT: number = 10;
+    private readonly blocksDownT: number = 8;
 
     /* 控制 */
     private isGamePause: boolean = false;
@@ -160,6 +160,7 @@ export default class GameLogic extends cc.Component {
     }
 
     private resetGame() {
+        debugger
         //初始化状态栏
         this.hp = 3;
         this.score = 0;

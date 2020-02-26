@@ -1,0 +1,124 @@
+{
+  "version": "1.1.1",
+  "windows": {
+    "main": {
+      "main": true,
+      "url": "app://editor/index.html",
+      "windowType": "dockable",
+      "x": 0,
+      "y": 0,
+      "width": 1280,
+      "height": 720,
+      "layout": {
+        "children": [
+          {
+            "children": [
+              {
+                "active": 0,
+                "children": [
+                  "hierarchy"
+                ],
+                "height": 299.8125,
+                "type": "panel",
+                "width": 206.2604217529297
+              },
+              {
+                "active": 0,
+                "children": [
+                  "assets"
+                ],
+                "height": 316.1875,
+                "type": "panel",
+                "width": 206.2604217529297
+              }
+            ],
+            "height": 618,
+            "type": "dock-v",
+            "width": 206.2604217529297
+          },
+          {
+            "active": 0,
+            "children": [
+              "inspector"
+            ],
+            "height": 618,
+            "type": "panel",
+            "width": 307.375
+          },
+          {
+            "children": [
+              {
+                "active": 0,
+                "children": [
+                  "scene"
+                ],
+                "height": 384.3645935058594,
+                "type": "panel",
+                "width": 762.3541870117188
+              },
+              {
+                "active": 0,
+                "children": [
+                  "console"
+                ],
+                "height": 231.6354217529297,
+                "type": "panel",
+                "width": 762.3541870117188
+              }
+            ],
+            "height": 618,
+            "type": "dock-v",
+            "width": 762.3541870117188
+          }
+        ],
+        "type": "dock-h"
+      },
+      "panels": [
+        "hierarchy",
+        "assets",
+        "inspector",
+        "console",
+        "scene"
+      ]
+    },
+    "window-1582718362138": {}
+  },
+  "panels": {
+    "store": {
+      "x": 230,
+      "y": 30,
+      "width": 816,
+      "height": 638
+    },
+    "cc-inspector.info": {
+      "x": 430,
+      "y": 180,
+      "width": 416,
+      "height": 338
+    },
+    "cc-inspector.preview-web": {
+      "x": 238,
+      "y": 175,
+      "width": 995,
+      "height": 737
+    },
+    "cc-inspector": {
+      "x": 276,
+      "y": 160,
+      "width": 416,
+      "height": 338
+    },
+    "cc-inspector.set": {
+      "x": 708,
+      "y": 136,
+      "width": 318,
+      "height": 440
+    },
+    "cc-inspector.help": {
+      "x": 500,
+      "y": 100,
+      "width": 280,
+      "height": 498
+    }
+  }
+}

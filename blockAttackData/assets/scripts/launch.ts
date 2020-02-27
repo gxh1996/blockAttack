@@ -153,7 +153,7 @@ export default class Launch extends cc.Component {
                 return 1;
         });
         let list = userGameDatas.slice(0, n - 1);
-        return list;
+        return list.reverse();
     }
     /**
      * 从KVData列表中找出指定KVData.key的KVData，返回其KVData.value

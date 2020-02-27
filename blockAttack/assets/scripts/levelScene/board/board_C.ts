@@ -33,7 +33,7 @@ export default class Board_C extends cc.Component {
     /**记录由于道具效果影响下积累的宽度，但实际显示的board宽不会超过屏幕大小 */
     private boardWidth: number = 0;
     private initWidth: number = 120;
-    private excuteList: [Function, number] = null;
+    private excuteList: [Function, number][] = [];
 
     /* 控制变量 */
     private needShoot: boolean = true;
@@ -76,7 +76,7 @@ export default class Board_C extends cc.Component {
         EventManager.addSubscribe(this, "prop:addLengthOfBoard", function (len: number) {
             //在这里立即执行会报错，很烦！不知道为什么，以后考虑不要立即执行
             // this.changeWidth(len)
-            this.excuteList = [this.changeWidth, len];
+            this.excuteList.push([this.changeWidth, len]);
         })
         EventManager.addSubscribe(this, "effectEnd:addLengthOfBoard", function (len: number) {
             this.changeWidth(-len);
@@ -103,6 +103,7 @@ export default class Board_C extends cc.Component {
         this.node.width = this.initWidth;
         this.collider.size.width = this.initWidth;
         this.collider.apply();
+        this.board_V.updateMoveRange();
         this.node.setPosition(this.initPos);
         this.createInitBall();
     }
@@ -183,9 +184,9 @@ export default class Board_C extends cc.Component {
     }
 
     update(dt) {
-        if (this.excuteList) {
-            this.excuteList[0].call(this, this.excuteList[1]);
-            this.excuteList = null;
-        }
+        let exc: [Function, number];
+        while (exc = this.excuteList.shift())
+            exc[0].call(this, exc[1]);
+
     }
 }

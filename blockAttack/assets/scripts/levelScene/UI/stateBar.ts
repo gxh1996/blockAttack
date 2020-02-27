@@ -70,6 +70,15 @@ export default class StateBar extends cc.Component {
         LoadManager.loadManager.updateRateOfBuild(no, 1);
     }
 
+    /**清空所有道具持续时间的显示 */
+    clearPropDurationShow() {
+        debugger
+        let ssd: ShowStateDuration;
+        let it = this.propStates.values();
+        while (ssd = it.next().value)
+            ssd.setDuration(0);
+    }
+
     updateHPLabel(hp: number) {
         this.HPLabel.string = hp.toString();
     }

@@ -21,9 +21,9 @@ export default class IndexScene extends cc.Component {
 
     onLoad() {
         this.initSubscribe();
-        for (let i = 0; i < 100; i++) {
-            console.log(Util.getRandomNumber(0, 1));
-        }
+        // for (let i = 0; i < 100; i++) {
+        //     console.log(Util.getRandomNumber(0, 1));
+        // }
     }
 
     private initSubscribe() {

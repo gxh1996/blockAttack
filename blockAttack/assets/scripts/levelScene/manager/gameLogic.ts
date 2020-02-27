@@ -160,11 +160,11 @@ export default class GameLogic extends cc.Component {
     }
 
     private resetGame() {
-        debugger
         //初始化状态栏
         this.hp = 3;
         this.score = 0;
         this.updatteStateBar();
+        this.stateBar.clearPropDurationShow();
 
         //初始化控制
         this.isGamePause = false;

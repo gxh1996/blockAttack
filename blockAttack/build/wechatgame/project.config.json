@@ -13,7 +13,6 @@
 	"projectname": "blockAttack",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
-	"isGameTourist": true,
 	"condition": {
 		"search": {
 			"current": -1,

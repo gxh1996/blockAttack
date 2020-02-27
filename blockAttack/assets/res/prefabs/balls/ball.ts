@@ -115,9 +115,10 @@ export default class Ball extends cc.Component {
                 EventManager.publishEvent("ballToBlock", block);
             }
         }
-        else if (group === "BOARD") {
-            this.setSpeed(this.ballManager.getSpeed());
-        }
+        // else if (group === "BOARD") {
+        //     debugger
+        // }
+        this.setSpeed(this.ballManager.getSpeed());
 
         this.reviseSpeed()
     }
@@ -205,6 +206,7 @@ export default class Ball extends cc.Component {
             // console.log(`${d}°改为${180 + this.degreeOfChange}`);
         }
 
+        //速度趋于向下或向上时
         let newD: number;
         if (d >= 250 && d < 270) {
             newD = 250 - Util.getRandomNumber(0, 10);
@@ -225,6 +227,10 @@ export default class Ball extends cc.Component {
             this.changeDegreeOfLV(newD);
             // console.log(`${d}°改为${newD}`);
 
+        }
+        else if (d <= 95 && d >= 85) {
+            newD = 90 + Util.getRandomNumber(-10, 10);
+            this.changeDegreeOfLV(newD);
         }
     }
 
